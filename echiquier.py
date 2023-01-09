@@ -32,7 +32,7 @@ class Echiquier:
         return str(self.tab[7])+'\n'+str(self.tab[6])+'\n'+str(self.tab[5])+'\n'+str(self.tab[4])+'\n'+str(self.tab[3])+'\n'+str(self.tab[2])+'\n'+str(self.tab[1])+'\n'+str(self.tab[0])+'\n'
         
     #Cette fonction transforme une position sur l'écran (en pixels) en position sur l'échiquier
-    def transfertCoordonnes(self, pos = ()):
+    def transfertCoordonnees(self, pos = ()):
     
         x = pos[0]
         y = pos[1]

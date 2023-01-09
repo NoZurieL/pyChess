@@ -39,7 +39,7 @@ class Application:
                     #Si c'est le premier clic 
                     if not piece_selec:
                         
-                        pos_i = self.echiquier.transfertCoordonnes(event.pos)
+                        pos_i = self.echiquier.transfertCoordonnees(event.pos)
 
                         if self.echiquier.tab[pos_i[1]][pos_i[0]].estPiece():
                             
@@ -48,7 +48,7 @@ class Application:
                     #Si une pièce est sélectionnée, on veut déplacer la pièce à cet endroit
                     else:
                         
-                        pos_f = self.echiquier.transfertCoordonnes(event.pos)
+                        pos_f = self.echiquier.transfertCoordonnees(event.pos)
 
                         if pos_i == pos_f:
                             pass
