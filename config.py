@@ -1,0 +1,9 @@
+#Définition des constantes
+TAILLE_PIECE = 53
+TAILLE_CASE = 64
+ORIGINE_Y = 128
+LARGEUR = 512
+HAUTEUR = 768
+FPS = 60
+COULEUR_CLAIRE = 'burlywood3'
+COULEUR_SOMBRE = 'burlywood4'
