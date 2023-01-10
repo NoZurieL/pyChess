@@ -2,6 +2,7 @@ import pygame, sys
 from echiquier import Echiquier
 from config import *
 
+#PROGRAMME PRINCIPAL
 #L'application englobe la fenêtre et ses fonctions d'affichage et de récupération des évènements
 class Application:
     def __init__(self):
