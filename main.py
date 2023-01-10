@@ -17,7 +17,43 @@ class Application:
         icone = pygame.image.load('assets/Cn.png')
         pygame.display.set_icon(icone)
         
+        
+    #Cette fonction permet d'afficher les cases de l'échiquier
+    def afficherPlateau(self):
+        
+        for ligne in range(8):
+            for colonne in range(8):
+                
+                x = colonne * TAILLE_CASE
+                y = ORIGINE_Y + ligne * TAILLE_CASE
+                
+                if (ligne+colonne)%2 == 0:
+                    couleur = COULEUR_CLAIRE
+                else:
+                    couleur = COULEUR_SOMBRE
+                
+                rect = pygame.Rect(x, y, TAILLE_CASE, TAILLE_CASE)
+                pygame.draw.rect(self.ecran, couleur, rect)
 
+    #Cette fonction permet d'afficher les pièces
+    def afficherPieces(self):
+
+        for ligne in range(8):
+            for colonne in range(8):
+
+                x = colonne * TAILLE_CASE + TAILLE_CASE/2
+                y = ORIGINE_Y + (7-ligne) * TAILLE_CASE + TAILLE_CASE/2
+                
+                piece = self.echiquier.tab[ligne][colonne]
+
+                if piece.estPiece():
+
+                    piece.texture = piece.texture.convert_alpha()
+                    rect = piece.texture.get_rect(center=(x,y))
+
+                    self.ecran.blit(piece.texture, rect)
+    
+    #Fonction de mise à jour de l'application
     def run(self):
         
         piece_selec = False
