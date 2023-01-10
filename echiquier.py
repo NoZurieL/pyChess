@@ -66,37 +66,3 @@ class Echiquier:
         else:
             return []
     
-    #Cette fonction permet d'afficher les cases de l'échiquier
-    def afficherPlateau(self, ecran):
-        
-        for ligne in range(8):
-            for colonne in range(8):
-                
-                x = colonne * TAILLE_CASE
-                y = ORIGINE_Y + ligne * TAILLE_CASE
-                
-                if (ligne+colonne)%2 == 0:
-                    couleur = COULEUR_CLAIRE
-                else:
-                    couleur = COULEUR_SOMBRE
-                
-                rect = pygame.Rect(x, y, TAILLE_CASE, TAILLE_CASE)
-                pygame.draw.rect(ecran, couleur, rect)
-
-    #Cette fonction permet d'afficher les pièces
-    def afficherPieces(self, ecran):
-
-        for ligne in range(8):
-            for colonne in range(8):
-
-                x = colonne * TAILLE_CASE + TAILLE_CASE/2
-                y = ORIGINE_Y + (7-ligne) * TAILLE_CASE + TAILLE_CASE/2
-
-                if self.tab[ligne][colonne].nom != '0':
-                    
-                    piece = self.tab[ligne][colonne]
-
-                    piece.texture = piece.texture.convert_alpha()
-                    rect = piece.texture.get_rect(center=(x,y))
-
-                    ecran.blit(piece.texture, rect)
