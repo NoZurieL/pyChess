@@ -61,7 +61,7 @@ class Echiquier:
         piece = self.tab[y][x]
 
         #La classe Vide ne possède pas de libertes : on retourne une liste vide
-        if piece.nom != 'vide':
+        if piece.estPiece():
             return piece.libertes(pos, self.tab)
         else:
             return []
