@@ -36,13 +36,13 @@ class Pion(Piece):
         x = pos[0]
         y = pos[1]
 
-        if tab[y][x].couleur== 'noir':
+        if self.couleur== 'noir':
             libertes = [(x,y+1), (x, y+2), (x-1,y+1), (x+1,y+1)]
             if y != 6:
                 libertes.pop(1)
             
             
-        elif tab[y][x].couleur== 'blanc': 
+        elif self.couleur== 'blanc': 
             libertes = [(x,y-1), (x, y-2), (x-1,y-1), (x+1,y-1)]
             if y != 1:
                 libertes.pop(1)
@@ -59,9 +59,7 @@ class Cavalier(Piece):
         x = pos[0]
         y = pos[1]
 
-        libertes = []
-
-        libertes = [(x-1,y+2),(x+1,y+2),(x+2,y+1),(x+2,y-1),(x+1,y-2),(x-1,y-2),(x-2,y-2),(x-2,y+1)]
+        libertes = [(x-1,y+2),(x+1,y+2),(x+2,y+1),(x+2,y-1),(x+1,y-2),(x-1,y-2),(x-2,y-1),(x-2,y+1)]
         
         i = 0
         while i < len(libertes):
@@ -72,7 +70,7 @@ class Cavalier(Piece):
             if xf > 7 or xf < 0 or yf > 7 or yf < 0:
                 libertes.pop(i)
                 
-            elif tab[yf][xf].couleur == tab[y][x].couleur:
+            elif tab[yf][xf].couleur == self.couleur:
                 libertes.pop(i)
             
             else :
