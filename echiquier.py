@@ -18,7 +18,8 @@ class Echiquier:
         Pb = Pion('blanc')
         O = Vide()
 
-                       
+        self.case_vide = O
+              
         self.tab = [[Tb,Cb,Fb,Db,Rb,Fb,Cb,Tb],
                     [Pb,Pb,Pb,Pb,Pb,Pb,Pb,Pb],
                     [O ,O ,O ,O ,O ,O ,O ,O ],
@@ -32,37 +33,21 @@ class Echiquier:
         return str(self.tab[7])+'\n'+str(self.tab[6])+'\n'+str(self.tab[5])+'\n'+str(self.tab[4])+'\n'+str(self.tab[3])+'\n'+str(self.tab[2])+'\n'+str(self.tab[1])+'\n'+str(self.tab[0])+'\n'
         
     #Cette fonction transforme une position sur l'écran (en pixels) en position sur l'échiquier
-    def transfertCoordonnees(self, pos = ()):
+    def projectionEchiquier(self, pos = ()):
     
-        x = pos[0]
-        y = pos[1]
+        (x,y) = pos
 
         i = int(x/TAILLE_CASE)
         j = 7-int((y - ORIGINE_Y)/TAILLE_CASE)
 
         return (i,j)
-    
-    #Cette fonction permet de déplacer une pièce dans l'échiquier
-    def deplacerPiece(self, pos_i = (), pos_f = ()):
-           
-        x = pos_i[0]
-        y = pos_i[1]
-        xf = pos_f[0]
-        yf = pos_f[1]
-        
-        self.tab[yf][xf] = self.tab[y][x]
-        self.tab[y][x] = Vide()
-    
-    #Cette fonction retourne la liste des mouvements (x,y) possibles grâce à la fonction libertes de chaque pièce
-    def mouvPossibles(self, pos=()):
-       
-        x = pos[0]
-        y = pos[1]
-        piece = self.tab[y][x]
 
-        #La classe Vide ne possède pas de libertes : on retourne une liste vide
-        if piece.estPiece():
-            return piece.libertes(pos, self.tab)
-        else:
-            return []
-    
+    #Cette fonction transforme une position sur l'échiquier en position sur l'écran
+    def projectionEcran(self, pos =()):
+
+        (i,j) = pos
+
+        x = (i+0.5) * TAILLE_CASE
+        y = ORIGINE_Y + (7-j+0.5) * TAILLE_CASE
+
+        return(x,y)
