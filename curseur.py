@@ -10,34 +10,32 @@ class Curseur():
         self.pos_curseur = ()
         self.case_init = ()
         self.piece = Vide()
+        self.mouv_possibles = []
     
     #Mise à jour de la position du curseur
     def update(self, pos=()):
         self.pos_curseur = pos
     
-    #On prend une pièce du tableau et on la met dans le curesur
+    #On prend une pièce et on la copie dans le curseur : Elle sera affichée sur le curseur
     def prendrePiece(self, ech = Echiquier(), case_piece = ()):
 
         self.case_init = case_piece
         (i,j) = case_piece
         piece_choisie = ech.tab[j][i]
         
+        #Si c'est une pièce, on la récupère + on récupère les libertés
         if piece_choisie.estPiece():
 
             self.piece = piece_choisie
-            ech.tab[j][i] = ech.case_vide
+            self.mouv_possibles = self.piece.libertes(self.case_init, ech.tab)
 
-    #On pose la pièce sélectionnée
+    #On pose la pièce sélectionnée : On effectue le déplacement dans l'échiquier
     def poserPiece(self, ech = Echiquier(), case_finale = ()):
         
+        #On fait le déplacement uniquement s'il y a une pièce sélectionnée
         if self.piece.estPiece():
-            if case_finale in self.piece.libertes(self.case_init, ech.tab):
-                            
-                ech.tab[case_finale[1]][case_finale[0]] = self.piece
 
-            else:
-
-                ech.tab[self.case_init[1]][self.case_init[0]] = self.piece
-
-            self.piece = Vide()
+            ech.deplacerPiece(self.case_init, case_finale)
+            self.piece = ech.case_vide
+            self.case_init = ()
 
