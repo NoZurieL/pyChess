@@ -24,7 +24,6 @@ class Piece:
         else:
             return False
 
-
 class Pion(Piece):
 
     def __init__(self, couleur):
@@ -64,12 +63,11 @@ class Cavalier(Piece):
         i = 0
         while i < len(libertes):
  
-            xf = libertes[i][0]
-            yf = libertes[i][1]
-            
+            (xf,yf) = libertes[i]
+   
             if xf > 7 or xf < 0 or yf > 7 or yf < 0:
                 libertes.pop(i)
-                
+    
             elif tab[yf][xf].couleur == self.couleur:
                 libertes.pop(i)
             
