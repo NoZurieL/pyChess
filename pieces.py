@@ -32,42 +32,22 @@ class Pion(Piece):
       
     def libertes(self, pos=(), tab =[]):
 
-        (x,y) =pos 
-        libertes =[]
+        (x,y) = pos
+        libertes = []
 
-        if tab[y][x].couleur== 'blanc':
-
-            if (y+1)<=7 :
-                if not tab[y+1][x].estPiece():
-                    libertes.append((x,y+1))
-
-                    if y == 1 and not tab[y+2][x].estPiece():
-                        libertes.append((x,y+2))
-
-            if (y+1)<=7 and (x-1)>=0:
-                if tab[y+1][x-1].couleur =='noir':  
-                    libertes.append((x-1,y+1)) 
-
-            if (y+1)<=7 and (x+1)<=7:
-                if tab[y+1][x+1].couleur =='noir':
-                    libertes.append((x+1,y+1))
-           
-        elif tab[y][x].couleur== 'noir': 
-
-            if (y-1)>=0:
-                if not tab[y-1][x].estPiece():
-                    libertes.append((x,y-1))
-
-                if y == 6 and not tab[y-2][x].estPiece():
-                    libertes.append((x,y-2))
-
-            if (x-1)>=0 and (y-1)>=0 :
-                if tab[y-1][x-1].couleur =='blanc':
-                    libertes.append((x-1,y-1)) 
-
-            if (x+1)<=7 and (y-1)>=0:
-                if tab[y-1][x+1].couleur =='blanc':
-                    libertes.append((x+1,y-1))
+        if self.couleur == 'blanc':
+            
+            if not tab[y+1][x].estPiece():
+                libertes.append((x,y+1))
+                
+                if y == 1 and not tab[y+2][x].estPiece():
+                    libertes.append((x,y+2))
+            
+            
+        elif self.couleur== 'noir': 
+            libertes = [(x,y-1), (x, y-2), (x-1,y-1), (x+1,y-1)]
+            if y != 6:
+                libertes.pop(1)
 
         return libertes
 
@@ -105,12 +85,54 @@ class Fou(Piece):
         super().__init__('Fou', couleur)
      
     def libertes(self, pos=(), tab =[]):
-
-        x = pos[0]
-        y = pos[1]
-
+        
+        (x,y) = pos
         libertes = []
-
+        
+        i = 1
+        while (x+i)<=7 and (y+i)<=7:
+            if tab[y+i][x+i].couleur != self.couleur:
+                libertes.append((x+i,y+i))
+                if not tab[y+i][x+i].estPiece():
+                    i+=1
+                else:
+                    break
+            else:
+                break
+        
+        i = 1
+        while (x+i)<=7 and (y-i)>=0:
+            if tab[y-i][x+i].couleur != self.couleur :
+                libertes.append((x+i,y-i))
+                if not tab[y-i][x+i].estPiece():
+                    i+=1
+                else:
+                    break
+            else:
+                break
+        
+        i = 1
+        while (x-i)>=0 and (y-i)>=0:
+            if tab[y-i][x-i].couleur != self.couleur :
+                libertes.append((x-i,y-i))
+                if not tab[y-i][x-i].estPiece():
+                    i+=1
+                else:
+                    break
+            else:
+                break
+                       
+        i = 1
+        while (x-i)>=0 and (y+i)<=7:
+            if tab[y+i][x-i].couleur != self.couleur :
+                libertes.append((x-i,y+i))
+                if not tab[y+i][x-i].estPiece():
+                    i+=1
+                else:
+                    break
+            else:
+                break
+        
         return libertes
 
 class Tour(Piece):
