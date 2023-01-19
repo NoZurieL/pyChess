@@ -24,7 +24,6 @@ class Piece:
         else:
             return False
 
-
 class Pion(Piece):
 
     def __init__(self, couleur):
@@ -33,19 +32,42 @@ class Pion(Piece):
       
     def libertes(self, pos=(), tab =[]):
 
-        x = pos[0]
-        y = pos[1]
+        (x,y) =pos 
+        libertes =[]
 
-        if tab[y][x].couleur== 'noir':
-            libertes = [(x,y+1), (x, y+2), (x-1,y+1), (x+1,y+1)]
-            if y != 6:
-                libertes.pop(1)
-            
-            
-        elif tab[y][x].couleur== 'blanc': 
-            libertes = [(x,y-1), (x, y-2), (x-1,y-1), (x+1,y-1)]
-            if y != 1:
-                libertes.pop(1)
+        if tab[y][x].couleur== 'blanc':
+
+            if (y+1)<=7 :
+                if not tab[y+1][x].estPiece():
+                    libertes.append((x,y+1))
+
+                    if y == 1 and not tab[y+2][x].estPiece():
+                        libertes.append((x,y+2))
+
+            if (y+1)<=7 and (x-1)>=0:
+                if tab[y+1][x-1].couleur =='noir':  
+                    libertes.append((x-1,y+1)) 
+
+            if (y+1)<=7 and (x+1)<=7:
+                if tab[y+1][x+1].couleur =='noir':
+                    libertes.append((x+1,y+1))
+           
+        elif tab[y][x].couleur== 'noir': 
+
+            if (y-1)>=0:
+                if not tab[y-1][x].estPiece():
+                    libertes.append((x,y-1))
+
+                if y == 6 and not tab[y-2][x].estPiece():
+                    libertes.append((x,y-2))
+
+            if (x-1)>=0 and (y-1)>=0 :
+                if tab[y-1][x-1].couleur =='blanc':
+                    libertes.append((x-1,y-1)) 
+
+            if (x+1)<=7 and (y-1)>=0:
+                if tab[y-1][x+1].couleur =='blanc':
+                    libertes.append((x+1,y-1))
 
         return libertes
 
@@ -59,20 +81,17 @@ class Cavalier(Piece):
         x = pos[0]
         y = pos[1]
 
-        libertes = []
-
-        libertes = [(x-1,y+2),(x+1,y+2),(x+2,y+1),(x+2,y-1),(x+1,y-2),(x-1,y-2),(x-2,y-2),(x-2,y+1)]
+        libertes = [(x-1,y+2),(x+1,y+2),(x+2,y+1),(x+2,y-1),(x+1,y-2),(x-1,y-2),(x-2,y-1),(x-2,y+1)]
         
         i = 0
         while i < len(libertes):
  
-            xf = libertes[i][0]
-            yf = libertes[i][1]
-            
+            (xf,yf) = libertes[i]
+   
             if xf > 7 or xf < 0 or yf > 7 or yf < 0:
                 libertes.pop(i)
-                
-            elif tab[yf][xf].couleur == tab[y][x].couleur:
+    
+            elif tab[yf][xf].couleur == self.couleur:
                 libertes.pop(i)
             
             else :
