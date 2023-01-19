@@ -157,7 +157,7 @@ class Fou(Piece):
 
 class Tour(Piece):
 
-    def __init__(self, couleur):
+   def __init__(self, couleur):
         super().__init__('Tour', couleur)
     
     def libertes(self, pos=(), tab =[]):
@@ -168,37 +168,51 @@ class Tour(Piece):
         libertes = []
         
         i=1
-        while x <= 7 and x >=0 and (y+i) <= 7:
-            if not tab[y+i][x].estPiece() and tab[y+i][x].couleur == self.couleur :    
+        while (y+i) <= 7:
+            if tab[y+i][x].couleur != self.couleur:            
                 libertes.append((x,y+i))  
-                i+=1
+                if not tab[y+i][x].estPiece():
+                    i+=1
+                else:
+                    break
             else:
                 break
                 
-        while x <= 7 and x >=0 and (y-i) >= 0:
-            if not tab[y-i][x].estPiece() and tab[y-i][x].couleur == self.couleur :    
+        i=1        
+        while (y-i) >= 0:
+            if tab[y-i][x].couleur != self.couleur:            
                 libertes.append((x,y-i))  
-                i+=1
+                if not tab[y-i][x].estPiece():
+                    i+=1
+                else:
+                    break
             else:
-                break    
+                break 
                 
-        while (x+i) <=7 and y <= 7 and y>=0:
-            if not tab[y][x+i].estPiece() and tab[y][x+i].couleur == self.couleur :    
+        i=1        
+        while (x+i) <=7:
+            if tab[y][x+i].couleur != self.couleur:            
                 libertes.append((x+i,y))  
-                i+=1
+                if not tab[y][x+i].estPiece():
+                    i+=1
+                else:
+                    break
             else:
-                break    
-        while (x-i) >=0 and y <= 7 and y>=0:
-            if not tab[y][x-i].estPiece() and tab[y][x-i].couleur == self.couleur :    
+                break
+        i=1        
+        while (x-i) >=0:
+            if tab[y][x-i].couleur != self.couleur:            
                 libertes.append((x-i,y))  
-                i+=1
+                if not tab[y][x-i].estPiece():
+                    i+=1
+                else:
+                    break
             else:
-                break     
+                break   
             
             
 
         return libertes
-
 class Roi(Piece):
 
     def __init__(self, couleur):
