@@ -32,19 +32,42 @@ class Pion(Piece):
       
     def libertes(self, pos=(), tab =[]):
 
-        x = pos[0]
-        y = pos[1]
+        (x,y) =pos 
+        libertes =[]
 
-        if self.couleur== 'noir':
-            libertes = [(x,y+1), (x, y+2), (x-1,y+1), (x+1,y+1)]
-            if y != 6:
-                libertes.pop(1)
-            
-            
-        elif self.couleur== 'blanc': 
-            libertes = [(x,y-1), (x, y-2), (x-1,y-1), (x+1,y-1)]
-            if y != 1:
-                libertes.pop(1)
+        if tab[y][x].couleur== 'blanc':
+
+            if (y+1)<=7 :
+                if not tab[y+1][x].estPiece():
+                    libertes.append((x,y+1))
+
+                    if y == 1 and not tab[y+2][x].estPiece():
+                        libertes.append((x,y+2))
+
+            if (y+1)<=7 and (x-1)>=0:
+                if tab[y+1][x-1].couleur =='noir':  
+                    libertes.append((x-1,y+1)) 
+
+            if (y+1)<=7 and (x+1)<=7:
+                if tab[y+1][x+1].couleur =='noir':
+                    libertes.append((x+1,y+1))
+           
+        elif tab[y][x].couleur== 'noir': 
+
+            if (y-1)>=0:
+                if not tab[y-1][x].estPiece():
+                    libertes.append((x,y-1))
+
+                if y == 6 and not tab[y-2][x].estPiece():
+                    libertes.append((x,y-2))
+
+            if (x-1)>=0 and (y-1)>=0 :
+                if tab[y-1][x-1].couleur =='blanc':
+                    libertes.append((x-1,y-1)) 
+
+            if (x+1)<=7 and (y-1)>=0:
+                if tab[y-1][x+1].couleur =='blanc':
+                    libertes.append((x+1,y-1))
 
         return libertes
 
