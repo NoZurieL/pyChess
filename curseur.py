@@ -27,7 +27,7 @@ class Curseur():
         if piece_choisie.estPiece():
 
             self.piece = piece_choisie
-            self.mouv_possibles = self.piece.libertes(self.case_init, ech.tab)
+            self.mouv_possibles = ech.mouvPossibles(self.case_init)
 
     #On pose la pièce sélectionnée : On effectue le déplacement dans l'échiquier
     def poserPiece(self, ech = Echiquier(), case_finale = ()):
@@ -35,7 +35,10 @@ class Curseur():
         #On fait le déplacement uniquement s'il y a une pièce sélectionnée
         if self.piece.estPiece():
 
-            ech.deplacerPiece(self.case_init, case_finale)
+            if case_finale in self.mouv_possibles:
+
+                ech.deplacerPiece(self.case_init, case_finale)
+            
             self.piece = ech.case_vide
             self.case_init = ()
 
