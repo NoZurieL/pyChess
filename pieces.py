@@ -105,12 +105,54 @@ class Fou(Piece):
         super().__init__('Fou', couleur)
      
     def libertes(self, pos=(), tab =[]):
-
-        x = pos[0]
-        y = pos[1]
-
+        
+        (x,y) = pos
         libertes = []
-
+        
+        i = 1
+        while (x+i)<=7 and (y+i)<=7:
+            if tab[y+i][x+i].couleur != self.couleur:
+                libertes.append((x+i,y+i))
+                if not tab[y+i][x+i].estPiece():
+                    i+=1
+                else:
+                    break
+            else:
+                break
+        
+        i = 1
+        while (x+i)<=7 and (y-i)>=0:
+            if tab[y-i][x+i].couleur != self.couleur :
+                libertes.append((x+i,y-i))
+                if not tab[y-i][x+i].estPiece():
+                    i+=1
+                else:
+                    break
+            else:
+                break
+        
+        i = 1
+        while (x-i)>=0 and (y-i)>=0:
+            if tab[y-i][x-i].couleur != self.couleur :
+                libertes.append((x-i,y-i))
+                if not tab[y-i][x-i].estPiece():
+                    i+=1
+                else:
+                    break
+            else:
+                break
+                       
+        i = 1
+        while (x-i)>=0 and (y+i)<=7:
+            if tab[y+i][x-i].couleur != self.couleur :
+                libertes.append((x-i,y+i))
+                if not tab[y+i][x-i].estPiece():
+                    i+=1
+                else:
+                    break
+            else:
+                break
+        
         return libertes
 
 class Tour(Piece):
