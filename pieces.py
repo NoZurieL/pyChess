@@ -157,7 +157,7 @@ class Fou(Piece):
 
 class Tour(Piece):
 
-   def __init__(self, couleur):
+    def __init__(self, couleur):
         super().__init__('Tour', couleur)
     
     def libertes(self, pos=(), tab =[]):
@@ -220,11 +220,50 @@ class Roi(Piece):
     
     def libertes(self, pos=(), tab =[]):
 
-        x = pos[0]
-        y = pos[1]
+        (x,y) = pos
 
-        libertes = []
-
+        libertes = [(x,y+1),(x+1,y+1),(x+1,y),(x+1,y-1),(x,y-1),(x-1,y-1),(x-1,y),(x-1,y+1)]
+        
+        #Récupération des cases protégées
+        cases_prot = []
+        for ligne in range(8):
+            for colonne in range(8):
+                
+                piece = tab[ligne][colonne]
+                pos_ennemi = (colonne,ligne)
+        
+                if piece.estPiece():
+                    if piece.couleur != self.couleur:
+                    
+                        #On ne peut pas aller à côté du roi ennemi
+                        if piece.nom == 'Roi':
+                            cases_prot += [(colonne,ligne+1),(colonne+1,ligne+1),(colonne+1,ligne),(colonne+1,ligne-1),(colonne,ligne-1),(colonne-1,ligne-1),(colonne-1,ligne),(colonne-1,ligne+1)]
+                        
+                        elif piece.nom == 'Pion':
+                            cases_prot += [(colonne+1,ligne+1),(colonne-1,ligne+1)]
+                        
+                        else:
+                            cases_prot += piece.libertes(pos_ennemi,tab)
+                    
+        
+        #On enlève les libertes en trop
+        i = 0
+        while i < len(libertes):
+ 
+            (xf,yf) = libertes[i]
+   
+            if xf > 7 or xf < 0 or yf > 7 or yf < 0:
+                libertes.pop(i)
+    
+            elif tab[yf][xf].couleur == self.couleur:
+                libertes.pop(i)
+            
+            elif (xf,yf) in cases_prot:
+                libertes.pop(i)
+            
+            else :
+                i+=1
+        
         return libertes
 
 class Dame(Piece):
@@ -234,10 +273,14 @@ class Dame(Piece):
     
     def libertes(self, pos=(), tab =[]):
 
-        x = pos[0]
-        y = pos[1]
-
+        (x,y) = pos
+        
         libertes = []
+        
+        #fou_test = Fou(self.couleur)
+        #tour_test = Tour(self.couleur)
+        
+        #libertes = fou_test.libertes(pos,tab) + tour_test.libertes(pos,tab)
 
         return libertes
 

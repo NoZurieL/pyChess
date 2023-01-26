@@ -46,6 +46,7 @@ class Application:
                     
                     case = echiquier.projectionEchiquier(event.pos)
                     curseur.poserPiece(echiquier, case)
+                    #print(self.jeu.estEchec('blanc'))
 
                 #Si on bouge la souris et qu'une pièce est dans le cuseur, on met à jour la position du curseur
                 if event.type == pygame.MOUSEMOTION and curseur.piece.estPiece():
