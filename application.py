@@ -9,6 +9,8 @@ class Application:
     def __init__(self):
             
         pygame.init()
+        pygame.font.init()
+        
         self.ecran = pygame.display.set_mode((LARGEUR,HAUTEUR))
         self.jeu = Jeu()
         self.curseur = Curseur()
@@ -17,6 +19,9 @@ class Application:
         pygame.display.set_caption('pyChess')
         icone = pygame.image.load('assets/Cn.png')
         pygame.display.set_icon(icone)
+        
+        self.police = pygame.font.Font('fonts/retro.ttf', TAILLE_POLICE)
+        
 
     #Fonction de mise à jour de l'application
     def run(self):
@@ -32,6 +37,7 @@ class Application:
 
                 #Si l'event est la croix de fermeture de la fenêtre : on ferme la fenêtre ET le programme
                 if event.type == pygame.QUIT:
+                    self.jeu.fichier_score()
                     pygame.quit()
                     sys.exit()
                 
@@ -39,7 +45,9 @@ class Application:
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
 
                     case = echiquier.projectionEchiquier(event.pos)
-                    curseur.prendrePiece(echiquier, case)
+                    if echiquier.tab[case[1]][case[0]].couleur == self.jeu.trait:
+                        curseur.prendrePiece(echiquier, case)
+                    
                     curseur.update(event.pos)
                     
                 #Si on relâche le boutton gauche de la souris, le curseur pose la pièce
@@ -53,10 +61,11 @@ class Application:
                     curseur.update(event.pos)
                 
             #AFFICHAGE
-            self.ecran.fill('gray20') #arrière-plan
+            self.ecran.fill(COULEUR_BANDEAU) #arrière-plan
             self.afficherPlateau()
             self.afficherPieces()
             self.afficherSelection()
+            self.afficherBandeaux()
                     
             #UPDATE
             pygame.display.update()
@@ -116,5 +125,41 @@ class Application:
                 self.ecran.blit(surf, rect)
             
             #AFFICHAGE DE LA PIECE SELECTIONNEE
-            rectangle_selec = self.curseur.piece.texture.get_rect(center = self.curseur.pos_curseur)
-            self.ecran.blit(self.curseur.piece.texture, rectangle_selec) 
+            surface_selec = pygame.transform.scale(self.curseur.piece.texture, (ZOOM,ZOOM))
+            rectangle_selec = surface_selec.get_rect(center = self.curseur.pos_curseur)
+            self.ecran.blit(surface_selec, rectangle_selec)
+            
+    #Cette fonction affiche les bandeaux avec les informations
+    def afficherBandeaux(self):
+    
+        #Traits
+        surf_trait_blanc = self.police.render('Trait aux Blancs', False, 'white')
+        rect_trait_blanc = surf_trait_blanc.get_rect()
+        rect_trait_blanc.center = (LARGEUR/2, HAUTEUR-ORIGINE_Y/2) 
+        
+        surf_trait_noir = self.police.render('Trait aux Noirs', False, 'white')
+        rect_trait_noir = surf_trait_noir.get_rect()
+        rect_trait_noir.center = (LARGEUR/2, ORIGINE_Y/2)
+        
+        if self.jeu.trait == 'blanc':
+            self.ecran.blit(surf_trait_blanc, rect_trait_blanc)
+        elif self.jeu.trait == 'noir':
+            self.ecran.blit(surf_trait_noir, rect_trait_noir)
+        
+        #Scores
+        txt_score_blanc = 'Score : '+str(self.jeu.score_blanc)
+        surf_score_blanc = self.police.render(txt_score_blanc, False, 'white')
+        rect_score_blanc = surf_score_blanc.get_rect()
+        rect_score_blanc.midleft = (5, HAUTEUR-ORIGINE_Y/2) 
+        self.ecran.blit(surf_score_blanc, rect_score_blanc)
+        
+        txt_score_noir = 'Score : '+str(self.jeu.score_noir)
+        surf_score_noir = self.police.render(txt_score_noir, False, 'white')
+        rect_score_noir = surf_score_noir.get_rect()
+        rect_score_noir.midleft = (5, ORIGINE_Y/2) 
+        self.ecran.blit(surf_score_noir, rect_score_noir)
+
+        
+        
+        
+        

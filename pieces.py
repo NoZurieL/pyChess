@@ -247,22 +247,7 @@ class Roi(Piece):
     def libertes(self, pos=(), tab =[]):
 
         (x,y) = pos
-        
-        menaces_ennemies = []
-        
-        #Cases menacées par l'ensemble des ennemis
-        for ligne in range(8):
-            for colonne in range(8):
-                
-                piece_ennemie = tab[ligne][colonne]
-                pos_ennemie = (colonne,ligne)
-        
-                if piece_ennemie.estPiece():
-                    if piece_ennemie.couleur != self.couleur:
-                        menaces_ennemies += piece_ennemie.menaces(pos_ennemie, tab)
-        
         libertes = [(x,y+1),(x+1,y+1),(x+1,y),(x+1,y-1),(x,y-1),(x-1,y-1),(x-1,y),(x-1,y+1)]
-        print(menaces_ennemies)
 
         i = 0
         while i < len(libertes):
@@ -271,8 +256,6 @@ class Roi(Piece):
             
             if xf > 7 or xf < 0 or yf > 7 or yf < 0:
                 libertes.pop(i)
-            elif libertes[i] in menaces_ennemies:
-                libertes.pop(i)
             elif tab[yf][xf].estPiece() and tab[yf][xf].couleur == self.couleur:
                 libertes.pop(i)  
             else: i+=1
@@ -280,20 +263,7 @@ class Roi(Piece):
         return libertes
     
     def menaces(self, pos=[], tab=[]):
-
-        (x,y) = pos
-        menaces = [(x,y+1),(x+1,y+1),(x+1,y),(x+1,y-1),(x,y-1),(x-1,y-1),(x-1,y),(x-1,y+1)]
-
-        i = 0
-        while i < len(menaces):
-
-            (xf,yf) = menaces[i]
-
-            if xf > 7 or xf < 0 or yf > 7 or yf < 0:
-                menaces.pop(i)
-            else: i+=1
-    
-        return menaces
+        return self.libertes(pos, tab)
 
 class Dame(Piece):
 
