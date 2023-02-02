@@ -32,11 +32,11 @@ class Jeu:
             self.evaluer_score()
             self.passerTrait()
     
+    #Cette fonction évalue le score des blancs et des noirs en fonction de la valeur de chaque pièce
     def evaluer_score(self):
 
         self.score_noir =39
         self.score_blanc=39
-    
 
         for ligne in range(8):
             for colonne in range(8):
@@ -49,8 +49,6 @@ class Jeu:
                         if isinstance(piece,Pion):
                             self.score_noir -=1
                         
-
-
                         elif isinstance(piece,Dame):
                             self.score_noir -=9
 
@@ -73,7 +71,8 @@ class Jeu:
 
                         elif isinstance(piece,Tour):
                             self.score_blanc  -=5
-    
+                            
+    # Cette fonction crée un fichier .txt et écrit le score à l'intérieur
     def fichier_score(self):
         fichier = open("Score_partie.txt", "w")
         fichier.write("Le score final de la partie est:\n")
