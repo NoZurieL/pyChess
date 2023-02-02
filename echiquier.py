@@ -77,14 +77,6 @@ class Echiquier:
                 i+=1
 
         return mouvements_possibles
-    
-    #Cette fonction permet de réaliser un déplacement si il est possible
-    def deplacerPiece(self, case_i =(), case_f =()):
-
-        self.tab[case_f[1]][case_f[0]] = self.tab[case_i[1]][case_i[0]]
-        self.tab[case_i[1]][case_i[0]] = self.case_vide
-
-
         
 
 
