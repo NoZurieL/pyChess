@@ -1,7 +1,7 @@
 import pygame
 from config import *
 #Ce fichier définit les classes de pièces, qui sont les objets composant l'échiquier.
-#Chaque pièce a des propriétés différentes, comme son nom, sa couleur ou encore ses libertés de mouvement
+#Chaque pièce a des propriétés différentes, comme son nom, sa couleur, les cases qu'elle menace ou encore ses libertés de mouvement
 
 class Piece:
     def __init__(self, nom, couleur):
@@ -23,13 +23,12 @@ class Piece:
             return True
         else:
             return False
-
+    
 class Pion(Piece):
 
     def __init__(self, couleur):
         super().__init__('Pion', couleur)
-        
-      
+         
     def libertes(self, pos=(), tab =[]):
 
         (x,y) =pos 
@@ -70,6 +69,23 @@ class Pion(Piece):
                     libertes.append((x+1,y-1))
 
         return libertes
+    
+    def menaces(self, pos=[], tab=[]):
+
+        (x,y) = pos
+        if self.couleur== 'blanc':
+            menaces = [(x-1,y+1),(x+1,y+1)]
+           
+        elif self.couleur== 'noir':
+            menaces = [(x-1,y-1),(x+1,y-1)]
+        
+        i = 0
+        while i < len(menaces):
+            if menaces[i][0] > 7 or menaces[i][0] < 0 or menaces[i][1] > 7 or menaces[i][1] < 0:
+                menaces.pop(i)
+            else: i+=1
+
+        return menaces
 
 class Cavalier(Piece):
 
@@ -99,6 +115,9 @@ class Cavalier(Piece):
 
         return libertes
 
+    def menaces(self, pos=[], tab=[]):
+        return self.libertes(pos,tab)
+
 class Fou(Piece):
 
     def __init__(self, couleur):
@@ -109,6 +128,7 @@ class Fou(Piece):
         (x,y) = pos
         libertes = []
         
+        #Le fou se déplace à la découverte sur les diagonales : on parcourt les diagonales jusqu'à trouver un obstacle
         i = 1
         while (x+i)<=7 and (y+i)<=7:
             if tab[y+i][x+i].couleur != self.couleur:
@@ -154,10 +174,13 @@ class Fou(Piece):
                 break
         
         return libertes
+    
+    def menaces(self, pos=[], tab=[]):
+        return self.libertes(pos,tab)
 
 class Tour(Piece):
 
-   def __init__(self, couleur):
+    def __init__(self, couleur):
         super().__init__('Tour', couleur)
     
     def libertes(self, pos=(), tab =[]):
@@ -167,6 +190,7 @@ class Tour(Piece):
 
         libertes = []
         
+        #La tour se déplace à la découverte sur les lignes/colonnes : on parcourt les lignes/colonnes jusqu'à trouver un obstacle
         i=1
         while (y+i) <= 7:
             if tab[y+i][x].couleur != self.couleur:            
@@ -209,10 +233,12 @@ class Tour(Piece):
                     break
             else:
                 break   
-            
-            
 
         return libertes
+
+    def menaces(self, pos=[], tab=[]):
+        return self.libertes(pos,tab)
+
 class Roi(Piece):
 
     def __init__(self, couleur):
@@ -220,12 +246,24 @@ class Roi(Piece):
     
     def libertes(self, pos=(), tab =[]):
 
-        x = pos[0]
-        y = pos[1]
+        (x,y) = pos
+        libertes = [(x,y+1),(x+1,y+1),(x+1,y),(x+1,y-1),(x,y-1),(x-1,y-1),(x-1,y),(x-1,y+1)]
 
-        libertes = []
+        i = 0
+        while i < len(libertes):
+
+            (xf,yf) = libertes[i]
+            
+            if xf > 7 or xf < 0 or yf > 7 or yf < 0:
+                libertes.pop(i)
+            elif tab[yf][xf].estPiece() and tab[yf][xf].couleur == self.couleur:
+                libertes.pop(i)  
+            else: i+=1
 
         return libertes
+    
+    def menaces(self, pos=[], tab=[]):
+        return self.libertes(pos, tab)
 
 class Dame(Piece):
 
@@ -234,12 +272,16 @@ class Dame(Piece):
     
     def libertes(self, pos=(), tab =[]):
 
-        x = pos[0]
-        y = pos[1]
+        #Les libertés de la dame sont les libertés du fou et de la tour réunis
+        ref_fou = Fou(self.couleur)
+        ref_tour = Tour(self.couleur)
 
-        libertes = []
+        libertes = ref_fou.libertes(pos,tab) + ref_tour.libertes(pos,tab)
 
         return libertes
+    
+    def menaces(self, pos=[], tab=[]):
+        return self.libertes(pos,tab)
 
 class Vide(Piece):
 

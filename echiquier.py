@@ -52,12 +52,62 @@ class Echiquier:
 
         return(x,y)
 
+    
+    def estEchec(self, couleur):
+        
+        #Menaces totales des ennemis
+        menaces_ennemies = []
+        for ligne in range(8):
+            for colonne in range(8):
+                
+                piece = self.tab[ligne][colonne]
+                pos = (colonne,ligne)
+        
+                if piece.estPiece():
+                    if piece.couleur != couleur:
+                        menaces_ennemies += piece.menaces(pos, self.tab)
+                    elif piece.nom == 'Roi':
+                        pos_roi = pos
+   
+        if pos_roi in menaces_ennemies:
+            return True
+        else:
+            return False
+    
+
+    #Cette fonction teste si un mouvement mène à un état d'échec
+    def estMouvementCritique(self, pos_i=(), pos_f=()):
+        
+        (xi,yi) = pos_i
+        (xf,yf) = pos_f
+        piece = self.tab[yi][xi]
+        
+        #On sauvegarde la piece à la position finale
+        piece_sauvee = self.tab[yf][xf]
+        
+        #On fait le déplacement
+        self.tab[yf][xf] = piece
+        self.tab[yi][xi] = self.case_vide
+        
+        if self.estEchec(piece.couleur):
+            sortie = True
+        else :
+            sortie = False
+            
+        #On remet le tableau dans sa forme initiale
+        self.tab[yf][xf] = piece_sauvee
+        self.tab[yi][xi] = piece
+        
+        return sortie
+
+    
     #Cette fonction retourne la liste des mouvements possibles en utilisant les libertés + les restrictions générales
     def mouvPossibles(self, case_i =()):
-
+  
         mouvements_possibles=[]
-        (i,j) = case_i
-        piece = self.tab[j][i]
+        
+        (x,y) = case_i
+        piece = self.tab[y][x]
 
         #Libertés
         if piece.estPiece():
@@ -68,23 +118,20 @@ class Echiquier:
         while i < len(mouvements_possibles):
  
             (xf,yf) = mouvements_possibles[i]
-   
+
             #Prise d'un roi
             if self.tab[yf][xf].nom == 'Roi':
                 mouvements_possibles.pop(i)
-   
-            else :
+
+            #Mouvement menant à un échec
+            elif self.estMouvementCritique(case_i, mouvements_possibles[i]):
+                mouvements_possibles.pop(i)
+
+            else:
                 i+=1
-
+  
         return mouvements_possibles
-    
-    #Cette fonction permet de réaliser un déplacement si il est possible
-    def deplacerPiece(self, case_i =(), case_f =()):
-
-        self.tab[case_f[1]][case_f[0]] = self.tab[case_i[1]][case_i[0]]
-        self.tab[case_i[1]][case_i[0]] = self.case_vide
-
-
+        
         
 
 
