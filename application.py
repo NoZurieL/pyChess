@@ -1,6 +1,7 @@
 import pygame,sys
 from jeu import Jeu
 from curseur import Curseur
+from ia import IA
 from config import *
 
 #L'application contient une fenêtre dans laquelle on affiche un jeu, et un curseur
@@ -45,8 +46,7 @@ class Application:
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     
                     case = echiquier.projectionEchiquier(event.pos)
-                    curseur.poserPiece(echiquier, case)
-                    #print(self.jeu.estEchec('blanc'))
+                    curseur.poserPiece(self.jeu, case)
 
                 #Si on bouge la souris et qu'une pièce est dans le cuseur, on met à jour la position du curseur
                 if event.type == pygame.MOUSEMOTION and curseur.piece.estPiece():

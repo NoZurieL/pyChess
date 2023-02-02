@@ -1,5 +1,5 @@
-import pygame
 from pieces import *
+from jeu import Jeu
 from echiquier import Echiquier
 from config import *
 
@@ -30,15 +30,12 @@ class Curseur():
             self.mouv_possibles = ech.mouvPossibles(self.case_init)
 
     #On pose la pièce sélectionnée : On effectue le déplacement dans l'échiquier
-    def poserPiece(self, ech = Echiquier(), case_finale = ()):
-        
+    def poserPiece(self, jeu = Jeu(), case_finale = ()):
+
         #On fait le déplacement uniquement s'il y a une pièce sélectionnée
         if self.piece.estPiece():
-
-            if case_finale in self.mouv_possibles:
-
-                ech.deplacerPiece(self.case_init, case_finale)
             
-            self.piece = ech.case_vide
+            jeu.deplacerPiece(self.case_init, case_finale)
+            self.piece = jeu.echiquier.case_vide
             self.case_init = ()
 

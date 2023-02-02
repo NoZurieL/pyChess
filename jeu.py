@@ -8,32 +8,27 @@ class Jeu:
         
         self.echiquier = Echiquier()
         self.horloge = pygame.time.Clock()
-        self.trait = 'blancs'
+        self.trait = 'blanc'
         self.score_noir = 0
         self.score_blanc = 0
+    
+    def passerTrait(self):
 
-    def estEchec(self, couleur_roi):
-        mouvements_ennemis = []
-        for ligne in range(8):
-            for colonne in range(8):
-                
-                piece = self.echiquier.tab[ligne][colonne]
-                pos_piece = (colonne,ligne)
-        
-                if piece.estPiece():
-                    if piece.couleur != couleur_roi:
-                        
-                        mouvements_ennemis += piece.libertes(pos_piece,self.echiquier.tab)
-                    
-                    elif piece.nom == 'Roi':
-                        
-                        pos_roi = pos_piece
-                            
-        if pos_roi in mouvements_ennemis:
-            return True
+        if self.trait == 'blanc':
+            self.trait = 'noir'
         else :
-            return False
+            self.trait = 'blanc'
+    
+    #Cette fonction permet de réaliser un déplacement si il est possible
+    def deplacerPiece(self, case_i =(), case_f =()):
+
+        if case_f in self.echiquier.mouvPossibles(case_i):
+            
+            piece = self.echiquier.tab[case_i[1]][case_i[0]]
+            
+            if self.trait == piece.couleur:
         
-        
-                        
-        
+                self.echiquier.tab[case_f[1]][case_f[0]] = piece
+                self.echiquier.tab[case_i[1]][case_i[0]] = self.echiquier.case_vide
+                self.passerTrait()
+
