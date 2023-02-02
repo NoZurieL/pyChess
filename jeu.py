@@ -34,13 +34,13 @@ class Jeu:
                 self.echiquier.tab[case_i[1]][case_i[0]] = self.echiquier.case_vide
                 self.evaluer_score()
                 self.passerTrait()
-                self.fichier_score()
 
 
     def evaluer_score(self):
 
         self.score_noir =39
         self.score_blanc=39
+    
 
         for ligne in range(8):
             for colonne in range(8):
@@ -52,6 +52,8 @@ class Jeu:
 
                         if isinstance(piece,Pion):
                             self.score_noir -=1
+                        
+
 
                         elif isinstance(piece,Dame):
                             self.score_noir -=9
@@ -76,4 +78,10 @@ class Jeu:
                         elif isinstance(piece,Tour):
                             self.score_blanc  -=5
     
-    
+    def fichier_score(self):
+        fichier = open("Score_partie.txt", "w")
+        fichier.write("Le score final de la partie est:\n")
+        fichier.write("Total des points pour les blancs: " + str(self.score_blanc) +"\n")
+        fichier.write("Total des points pour les noirs: " + str(self.score_noir)+"\n")
+        fichier.close()
+      

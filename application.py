@@ -29,11 +29,12 @@ class Application:
             
             #EVENEMENTS
             for event in pygame.event.get():
-
+                
                 #Si l'event est la croix de fermeture de la fenêtre : on ferme la fenêtre ET le programme
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                self.jeu.fichier_score()    
                 
                 #Si on appuie sur le bouton gauche de la souris, le curseur prend la pièce
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
