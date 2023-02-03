@@ -30,14 +30,14 @@ class Application:
         curseur = self.curseur
        
         #Boucle d'update, est appellée en continu
-        while True :
+        while True:
             
             #EVENEMENTS
             for event in pygame.event.get():
 
                 #Si l'event est la croix de fermeture de la fenêtre : on ferme la fenêtre ET le programme
                 if event.type == pygame.QUIT:
-                    self.jeu.fichier_score()
+                    self.jeu.rapportPartie()
                     pygame.quit()
                     sys.exit()
                 
@@ -62,10 +62,14 @@ class Application:
                 
             #AFFICHAGE
             self.ecran.fill(COULEUR_BANDEAU) #arrière-plan
-            self.afficherPlateau()
-            self.afficherPieces()
-            self.afficherSelection()
-            self.afficherBandeaux()
+            if self.jeu.running:
+                self.afficherPlateau()
+                self.afficherPieces()
+                self.afficherSelection()
+                self.afficherBandeaux()
+            else:
+                self.afficherFin()
+                self.jeu.rapportPartie()
                     
             #UPDATE
             pygame.display.update()
@@ -147,17 +151,30 @@ class Application:
             self.ecran.blit(surf_trait_noir, rect_trait_noir)
         
         #Scores
-        txt_score_blanc = 'Score : '+str(self.jeu.score_blanc)
+        txt_score_blanc = 'Score : '+str(self.jeu.score['blanc'])
         surf_score_blanc = self.police.render(txt_score_blanc, False, 'white')
         rect_score_blanc = surf_score_blanc.get_rect()
         rect_score_blanc.midleft = (5, HAUTEUR-ORIGINE_Y/2) 
         self.ecran.blit(surf_score_blanc, rect_score_blanc)
         
-        txt_score_noir = 'Score : '+str(self.jeu.score_noir)
+        txt_score_noir = 'Score : '+str(self.jeu.score['noir'])
         surf_score_noir = self.police.render(txt_score_noir, False, 'white')
         rect_score_noir = surf_score_noir.get_rect()
         rect_score_noir.midleft = (5, ORIGINE_Y/2) 
         self.ecran.blit(surf_score_noir, rect_score_noir)
+    
+    def afficherFin(self):
+            
+        if self.jeu.defaite['blanc']:
+            surf_fin = self.police.render('Victoire des Noirs', False, 'white')
+        elif self.jeu.defaite['noir']:
+            surf_fin = self.police.render('Victoire des Blancs', False, 'white')
+        elif self.jeu.pat:
+            surf_fin = self.police.render('PAT', False, 'white')
+            
+        rect_fin = surf_fin.get_rect()
+        rect_fin.center = (LARGEUR/2,HAUTEUR/2)
+        self.ecran.blit(surf_fin, rect_fin)
 
         
         
