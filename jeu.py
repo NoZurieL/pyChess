@@ -10,8 +10,10 @@ class Jeu:
         self.echiquier = Echiquier()
         self.horloge = pygame.time.Clock()
         self.trait = 'blanc'
-        self.score_noir = 0
-        self.score_blanc = 0
+        self.score = {'blanc': 0, 'noir': 0}
+        self.defaite = {'blanc': False, 'noir': False}
+        self.pat = False
+        self.running = True
     
     def passerTrait(self):
 
@@ -27,16 +29,21 @@ class Jeu:
             
             piece = self.echiquier.tab[case_i[1]][case_i[0]]
 
+            #Si c'est le premier mouvement du roi
+            if isinstance(piece, Roi): 
+                if piece.immobile: piece.immobile = False
+
             self.echiquier.tab[case_f[1]][case_f[0]] = piece
             self.echiquier.tab[case_i[1]][case_i[0]] = self.echiquier.case_vide
-            self.evaluer_score()
+            self.evaluerScore()
             self.passerTrait()
+            self.evaluerFin()
     
     #Cette fonction évalue le score des blancs et des noirs en fonction de la valeur de chaque pièce
-    def evaluer_score(self):
+    def evaluerScore(self):
 
-        self.score_noir =39
-        self.score_blanc=39
+        self.score['noir'] = 39
+        self.score['blanc'] = 39
 
         for ligne in range(8):
             for colonne in range(8):
@@ -44,39 +51,40 @@ class Jeu:
                 piece = self.echiquier.tab[ligne][colonne]
                 
                 if  piece.estPiece():
-                    if piece.couleur =='blanc':
+                    for couleur in ['blanc', 'noir']:
+                        if piece.couleur == couleur:    
+                            if isinstance(piece,Pion):
+                                self.score[couleur] -=1
 
-                        if isinstance(piece,Pion):
-                            self.score_noir -=1
-                        
-                        elif isinstance(piece,Dame):
-                            self.score_noir -=9
+                            elif isinstance(piece,Dame):
+                                self.score[couleur]  -=9
 
-                        elif isinstance(piece,Cavalier) or isinstance(piece,Fou):
-                            self.score_noir -=3
+                            elif isinstance(piece,Cavalier) or isinstance(piece,Fou):
+                                self.score[couleur] -=3
 
-                        elif isinstance(piece,Tour):
-                            self.score_noir -=5
-
-                    if piece.couleur =='noir':
-
-                        if isinstance(piece,Pion):
-                            self.score_blanc -=1
-
-                        elif isinstance(piece,Dame):
-                            self.score_blanc  -=9
-
-                        elif isinstance(piece,Cavalier) or isinstance(piece,Fou):
-                            self.score_blanc  -=3
-
-                        elif isinstance(piece,Tour):
-                            self.score_blanc  -=5
+                            elif isinstance(piece,Tour):
+                                self.score[couleur] -=5
                             
-    # Cette fonction crée un fichier .txt et écrit le score à l'intérieur
-    def fichier_score(self):
-        fichier = open("Score_partie.txt", "w")
+    #Cette fonction permet d'evaluer la condition de fin de partie du joueur qui a le trait
+    def evaluerFin(self):
+
+        couleur = self.trait
+        if self.echiquier.estMat(couleur):
+            
+            if self.echiquier.estEchec(couleur):
+                self.defaite[couleur] = True
+                self.running = False
+            
+            elif self.echiquier.estPat(couleur):
+                self.pat = True
+                self.running = False
+    
+    
+    #Cette fonction crée un fichier .txt et écrit le score à l'intérieur
+    def rapportPartie(self):
+        fichier = open("Rapport_partie.txt", "w")
         fichier.write("Le score final de la partie est:\n")
-        fichier.write("Total des points pour les blancs: " + str(self.score_blanc) +"\n")
-        fichier.write("Total des points pour les noirs: " + str(self.score_noir)+"\n")
+        fichier.write("Total des points pour les blancs: " + str(self.score['blanc']) +"\n")
+        fichier.write("Total des points pour les noirs: " + str(self.score['noir'])+"\n")
         fichier.close()
 

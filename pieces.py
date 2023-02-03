@@ -243,6 +243,7 @@ class Roi(Piece):
 
     def __init__(self, couleur):
         super().__init__('Roi', couleur)
+        self.immobile = True #Permet de savoir si le Roi a deja bouge pendant la partie
     
     def libertes(self, pos=(), tab =[]):
 
@@ -260,6 +261,14 @@ class Roi(Piece):
                 libertes.pop(i)  
             else: i+=1
 
+        #ROQUE
+        if self.immobile:
+            if isinstance(tab[y][5], Vide) and isinstance(tab[y][6], Vide) and isinstance(tab[y][7], Tour):
+                libertes.append((7,y))
+            if isinstance(tab[y][3], Vide) and isinstance(tab[y][2], Vide) and isinstance(tab[y][1], Vide) and isinstance(tab[y][0], Tour):
+                libertes.append((0,y))
+        
+
         return libertes
     
     def menaces(self, pos=[], tab=[]):
@@ -272,7 +281,7 @@ class Dame(Piece):
     
     def libertes(self, pos=(), tab =[]):
 
-        #Les libertés de la dame sont les libertés du fou et de la tour réunis
+        #Les libertés de la dame sont les libertés du fou et de la tour réunies
         ref_fou = Fou(self.couleur)
         ref_tour = Tour(self.couleur)
 

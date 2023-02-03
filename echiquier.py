@@ -52,7 +52,6 @@ class Echiquier:
 
         return(x,y)
 
-    
     def estEchec(self, couleur):
         
         #Menaces totales des ennemis
@@ -74,9 +73,44 @@ class Echiquier:
         else:
             return False
     
+    def estMat(self, couleur):
+        
+        #Position du roi
+        for ligne in range(8):
+            for colonne in range(8):
+                
+                piece = self.tab[ligne][colonne]
+                pos = (colonne,ligne)
+        
+                if piece.estPiece():
+                    if piece.nom == 'Roi' and piece.couleur == couleur:
+                        pos_roi = pos
 
-    #Cette fonction teste si un mouvement mène à un état d'échec
-    def estMouvementCritique(self, pos_i=(), pos_f=()):
+        mouv_roi = self.mouvPossibles(pos_roi)
+
+        if mouv_roi == []:
+            return True
+        else:
+            return False
+
+    def estPat(self, couleur):
+        
+        for ligne in range(8):
+            for colonne in range(8):
+                
+                piece = self.tab[ligne][colonne]
+                pos = (colonne,ligne)
+                
+                if piece.estPiece():
+                    if piece.couleur == couleur:
+                        for each in self.mouvPossibles(pos):
+                            if self.estMouvementLegal(pos, each):
+                                return False
+
+        return True
+
+    #Cette fonction teste si un mouvement est legal (ne mene pas a l'echec)
+    def estMouvementLegal(self, pos_i=(), pos_f=()):
         
         (xi,yi) = pos_i
         (xf,yf) = pos_f
@@ -90,9 +124,9 @@ class Echiquier:
         self.tab[yi][xi] = self.case_vide
         
         if self.estEchec(piece.couleur):
-            sortie = True
-        else :
             sortie = False
+        else :
+            sortie = True
             
         #On remet le tableau dans sa forme initiale
         self.tab[yf][xf] = piece_sauvee
@@ -124,13 +158,14 @@ class Echiquier:
                 mouvements_possibles.pop(i)
 
             #Mouvement menant à un échec
-            elif self.estMouvementCritique(case_i, mouvements_possibles[i]):
+            elif not self.estMouvementLegal(case_i, mouvements_possibles[i]):
                 mouvements_possibles.pop(i)
 
             else:
                 i+=1
   
         return mouvements_possibles
+
         
         
 
