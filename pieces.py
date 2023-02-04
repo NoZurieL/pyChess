@@ -264,11 +264,10 @@ class Roi(Piece):
         #ROQUE
         if self.immobile:
             if isinstance(tab[y][5], Vide) and isinstance(tab[y][6], Vide) and isinstance(tab[y][7], Tour):
-                libertes.append((7,y))
+                libertes.append((6,y))
             if isinstance(tab[y][3], Vide) and isinstance(tab[y][2], Vide) and isinstance(tab[y][1], Vide) and isinstance(tab[y][0], Tour):
-                libertes.append((0,y))
+                libertes.append((1,y))
         
-
         return libertes
     
     def menaces(self, pos=[], tab=[]):

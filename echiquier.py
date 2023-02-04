@@ -73,27 +73,8 @@ class Echiquier:
         else:
             return False
     
+    #Cette fonction évalue s'il y a mat = aucun mouvement légal n'est possible (cad un mouvement qui ne mène pas à l'échec)
     def estMat(self, couleur):
-        
-        #Position du roi
-        for ligne in range(8):
-            for colonne in range(8):
-                
-                piece = self.tab[ligne][colonne]
-                pos = (colonne,ligne)
-        
-                if piece.estPiece():
-                    if piece.nom == 'Roi' and piece.couleur == couleur:
-                        pos_roi = pos
-
-        mouv_roi = self.mouvPossibles(pos_roi)
-
-        if mouv_roi == []:
-            return True
-        else:
-            return False
-
-    def estPat(self, couleur):
         
         for ligne in range(8):
             for colonne in range(8):
@@ -106,7 +87,6 @@ class Echiquier:
                         for each in self.mouvPossibles(pos):
                             if self.estMouvementLegal(pos, each):
                                 return False
-
         return True
 
     #Cette fonction teste si un mouvement est legal (ne mene pas a l'echec)
@@ -134,7 +114,6 @@ class Echiquier:
         
         return sortie
 
-    
     #Cette fonction retourne la liste des mouvements possibles en utilisant les libertés + les restrictions générales
     def mouvPossibles(self, case_i =()):
   

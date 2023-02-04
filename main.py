@@ -6,5 +6,3 @@ if __name__ == '__main__' :
     pyChess = Application()
     pyChess.run()
 
-
-        

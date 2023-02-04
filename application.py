@@ -1,7 +1,6 @@
 import pygame,sys
 from jeu import Jeu
 from curseur import Curseur
-from ia import IA
 from config import *
 
 #L'application contient une fenêtre dans laquelle on affiche un jeu, et un curseur
@@ -169,7 +168,7 @@ class Application:
             surf_fin = self.police.render('Victoire des Noirs', False, 'white')
         elif self.jeu.defaite['noir']:
             surf_fin = self.police.render('Victoire des Blancs', False, 'white')
-        elif self.jeu.pat:
+        else:
             surf_fin = self.police.render('PAT', False, 'white')
             
         rect_fin = surf_fin.get_rect()

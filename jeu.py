@@ -12,7 +12,6 @@ class Jeu:
         self.trait = 'blanc'
         self.score = {'blanc': 0, 'noir': 0}
         self.defaite = {'blanc': False, 'noir': False}
-        self.pat = False
         self.running = True
     
     def passerTrait(self):
@@ -29,10 +28,29 @@ class Jeu:
             
             piece = self.echiquier.tab[case_i[1]][case_i[0]]
 
-            #Si c'est le premier mouvement du roi
+            #PREMIER MOUVEMENT DU ROI
             if isinstance(piece, Roi): 
-                if piece.immobile: piece.immobile = False
-
+                if piece.immobile: 
+                    
+                    #ROQUE
+                    if case_f[0] == 6: #Petit ROQUE
+                        #Déplacement de la tour
+                        self.echiquier.tab[case_i[1]][5] = self.echiquier.tab[case_i[1]][7]
+                        self.echiquier.tab[case_i[1]][7] = self.echiquier.case_vide
+                    
+                    elif case_f[0] == 1: #Grand ROQUE
+                        #Déplacement de la tour
+                        self.echiquier.tab[case_i[1]][3] = self.echiquier.tab[case_i[1]][0] 
+                        self.echiquier.tab[case_i[1]][0] = self.echiquier.case_vide
+                    
+                    piece.immobile = False
+            
+            #PION PASSE
+            if isinstance(piece, Pion):
+                if case_f[1] == 7 or case_f[1] == 0: #Si on passe le pion
+                    piece = Dame(piece.couleur) #Le pion devient une dame
+            
+            
             self.echiquier.tab[case_f[1]][case_f[0]] = piece
             self.echiquier.tab[case_i[1]][case_i[0]] = self.echiquier.case_vide
             self.evaluerScore()
@@ -69,17 +87,14 @@ class Jeu:
     def evaluerFin(self):
 
         couleur = self.trait
+        #Si il y a mat le jeu s'arrête : si il y a échec c'est une défaite (échec et mat) sinon c'est égalité (PAT)
         if self.echiquier.estMat(couleur):
             
             if self.echiquier.estEchec(couleur):
                 self.defaite[couleur] = True
-                self.running = False
             
-            elif self.echiquier.estPat(couleur):
-                self.pat = True
-                self.running = False
-    
-    
+            self.running = False
+                
     #Cette fonction crée un fichier .txt et écrit le score à l'intérieur
     def rapportPartie(self):
         fichier = open("Rapport_partie.txt", "w")

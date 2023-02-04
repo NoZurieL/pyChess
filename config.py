@@ -1,4 +1,6 @@
 #Définition des constantes
+PROFONDEUR_IA = 5 #Nombre de coups que l'IA peut anticiper
+COULEUR_IA = 'noir'
 TAILLE_PIECE = 53
 TAILLE_CASE = 64
 ORIGINE_Y = 30
