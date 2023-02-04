@@ -59,6 +59,11 @@ class Application:
                 if event.type == pygame.MOUSEMOTION and curseur.piece.estPiece():
                     curseur.update(event.pos)
                 
+                #Si on appuie sur R on recommence le jeu
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                    pyChess = Application()
+                    pyChess.run()
+                
             #AFFICHAGE
             self.ecran.fill(COULEUR_BANDEAU) #arrière-plan
             if self.jeu.running:
