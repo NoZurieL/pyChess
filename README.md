@@ -6,4 +6,5 @@ Lucas BILLIANT
 Camille LAUVERGEAT
 Jaufré COULOMBE-BONNAFOUS
 
-![Diagramme de classe - Jeu d'échecs](https://user-images.githubusercontent.com/114352688/213260956-4c77aad5-85a1-4841-b276-bb5dae6b5433.png)
+![image](https://user-images.githubusercontent.com/114352688/217222740-02b662d6-b967-4998-9d43-4ea8d05ffa56.png)
+
