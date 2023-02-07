@@ -70,7 +70,7 @@ class Jeu:
                 
                 if  piece.estPiece():
                     for couleur in ['blanc', 'noir']:
-                        if piece.couleur == couleur:    
+                        if piece.couleur != couleur:    
                             if isinstance(piece,Pion):
                                 self.score[couleur] -=1
 
