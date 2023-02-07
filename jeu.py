@@ -8,7 +8,6 @@ class Jeu:
     def __init__(self):
         
         self.echiquier = Echiquier()
-        self.horloge = pygame.time.Clock()
         self.trait = 'blanc'
         self.score = {'blanc': 0, 'noir': 0}
         self.defaite = {'blanc': False, 'noir': False}
