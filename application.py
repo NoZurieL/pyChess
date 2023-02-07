@@ -13,6 +13,7 @@ class Application:
         self.ecran = pygame.display.set_mode((LARGEUR,HAUTEUR))
         self.jeu = Jeu()
         self.curseur = Curseur()
+        self.horloge = pygame.time.Clock()
 
         #Définition des paramètres de la fenêtre
         pygame.display.set_caption('pyChess')
@@ -79,7 +80,7 @@ class Application:
             pygame.display.update()
 
             #HORLOGE
-            self.jeu.horloge.tick(FPS)
+            self.horloge.tick(FPS)
 
     #Cette fonction permet d'afficher les cases de l'échiquier
     def afficherPlateau(self):
