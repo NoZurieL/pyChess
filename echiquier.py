@@ -84,8 +84,7 @@ class Echiquier:
                 
                 if piece.estPiece():
                     if piece.couleur == couleur:
-                        for each in self.mouvPossibles(pos):
-                            if self.estMouvementLegal(pos, each):
+                        if not self.mouvPossibles(pos) ==[]:
                                 return False
         return True
 
