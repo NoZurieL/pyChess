@@ -1,0 +1,5 @@
+Les blancs ont gagne!
+Le score final de la partie est:
+Total des points pour les blancs: 1
+Total des points pour les noirs: 0
+Ce jeu a ete realise par Jaufre, Camille et Lucas, merci de votre partie!

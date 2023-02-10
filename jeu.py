@@ -97,8 +97,18 @@ class Jeu:
     #Cette fonction crée un fichier .txt et écrit le score à l'intérieur
     def rapportPartie(self):
         fichier = open("Rapport_partie.txt", "w")
+        if self.defaite['noir']:
+            fichier.write("Les blancs ont gagne!\n")
+
+        elif self.defaite['blanc']: 
+            fichier.write("Les noirs ont gagne!\n")
+
+        else:
+            fichier.write("La partie n'est pas encore terminee!\n")
+
         fichier.write("Le score final de la partie est:\n")
         fichier.write("Total des points pour les blancs: " + str(self.score['blanc']) +"\n")
         fichier.write("Total des points pour les noirs: " + str(self.score['noir'])+"\n")
+        fichier.write("Ce jeu a ete realise par Jaufre, Camille et Lucas, merci de votre partie!\n")
         fichier.close()
 
